@@ -162,6 +162,10 @@ class ClientContainer {
         );
     }
 
+    get client(): ApolloClient<NormalizedCacheObject> | undefined {
+        return this._client;
+    }
+
     get previousServer(): string {
         return this._previousServer;
     }

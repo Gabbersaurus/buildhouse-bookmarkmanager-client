@@ -7,3 +7,14 @@ export const Authentication = gql`
         }
     }
 `;
+
+export const Bookmarks = gql`
+    query Bookmarks {
+        bookmarks {
+            id
+            name
+            url
+            order
+        }
+    }
+`;

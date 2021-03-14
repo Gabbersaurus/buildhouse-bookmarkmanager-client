@@ -14,8 +14,8 @@
             <v-container>
                 <v-row>
                     <v-col
-                        v-for="n in 30"
-                        :key="n"
+                        v-for="bookmark in bookmarks"
+                        :key="bookmark.id"
                         cols="3"
                         class="d-flex align-center"
                     >
@@ -37,7 +37,7 @@
                                     style="max-width: 72px;"
                                     class="text-caption text-none  text-truncate"
                                 >
-                                    Github
+                                    {{ bookmark.name }}
                                 </div>
                             </div>
                         </v-btn>
@@ -49,14 +49,34 @@
 </template>
 
 <script lang="ts">
+import ClientContainer from '@/graphQL/ClientContainer';
+import {Bookmarks} from '@/graphQL/queries';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import Settings from './Settings.vue';
+import Bookmark from '@/types/Bookmark';
 
 @Component({
     components: {Settings},
 })
 export default class BookmarkList extends Vue {
     settings = false;
+    bookmarks: Bookmark[] = [];
+
+    mounted() {
+        void this.loadBookmarks();
+    }
+
+    async loadBookmarks() {
+        //Todo: loading spinner
+
+        if (ClientContainer.client) {
+            const result = await ClientContainer.client.query({
+                query: Bookmarks,
+            });
+
+            this.bookmarks = result.data.bookmarks as Bookmark[];
+        }
+    }
 }
 </script>
