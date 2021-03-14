@@ -13,9 +13,9 @@
 </template>
 
 <script lang="ts">
-import {mapState} from 'vuex';
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import {mapState} from 'vuex';
 import BookmarkList from './components/BookmarkList.vue';
 import Login from './components/Login.vue';
 import ClientContainer from './graphQL/ClientContainer';

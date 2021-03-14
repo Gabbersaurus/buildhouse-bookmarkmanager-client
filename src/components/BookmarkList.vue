@@ -22,7 +22,8 @@
                         <v-btn
                             height="100%"
                             class="pa-1 ma-auto"
-                            @click="settings = true"
+                            :href="bookmark.url"
+                            target="_blank"
                         >
                             <div
                                 class="d-flex flex-column align-center justify-space-between"
@@ -49,19 +50,17 @@
 </template>
 
 <script lang="ts">
-import ClientContainer from '@/graphQL/ClientContainer';
-import {Bookmarks} from '@/graphQL/queries';
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import {mapState} from 'vuex';
 import Settings from './Settings.vue';
-import Bookmark from '@/types/Bookmark';
 
 @Component({
     components: {Settings},
+    computed: mapState(['bookmarks']),
 })
 export default class BookmarkList extends Vue {
     settings = false;
-    bookmarks: Bookmark[] = [];
 
     mounted() {
         void this.loadBookmarks();
@@ -70,13 +69,7 @@ export default class BookmarkList extends Vue {
     async loadBookmarks() {
         //Todo: loading spinner
 
-        if (ClientContainer.client) {
-            const result = await ClientContainer.client.query({
-                query: Bookmarks,
-            });
-
-            this.bookmarks = result.data.bookmarks as Bookmark[];
-        }
+        this.$store.dispatch('loadBookmarks');
     }
 }
 </script>
