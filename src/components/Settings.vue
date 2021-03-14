@@ -30,7 +30,7 @@
             <v-list three-line subheader>
                 <v-list-item>
                     <v-list-item-content>
-                        <v-btn color="primary">
+                        <v-btn color="primary" @click="logOut">
                             Log out
                         </v-btn>
                     </v-list-item-content>
@@ -41,6 +41,7 @@
 </template>
 
 <script lang="ts">
+import ClientContainer from '@/graphQL/ClientContainer';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {ModelSync} from 'vue-property-decorator';
@@ -49,5 +50,10 @@ import {ModelSync} from 'vue-property-decorator';
 export default class Settings extends Vue {
     @ModelSync('value', 'change', {type: Boolean})
     open!: boolean;
+
+    logOut() {
+        ClientContainer.ClearStoredAuthentication();
+        this.$store.commit('authenticate', false);
+    }
 }
 </script>

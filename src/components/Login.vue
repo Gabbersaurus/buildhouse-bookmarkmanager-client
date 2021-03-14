@@ -1,5 +1,5 @@
 <template>
-    <v-main>
+    <v-main class="d-flex align-center">
         <v-form v-model="valid">
             <v-container>
                 <v-row justify="center">
@@ -52,7 +52,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import {Emit} from 'vue-property-decorator';
 import ClientContainer from '@/graphQL/ClientContainer';
 
 @Component({
@@ -85,17 +84,10 @@ export default class Login extends Vue {
             );
 
             this.loading = false;
-
-            this.authenticated();
         } catch (error) {
             this.loading = false;
             this.error = error.message;
         }
-    }
-
-    @Emit()
-    authenticated() {
-        return;
     }
 }
 </script>

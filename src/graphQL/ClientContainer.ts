@@ -1,3 +1,4 @@
+import store from '@/store';
 import StoredAuthentication from '@/types/StoredAuthentication';
 import {
     ApolloClient,
@@ -59,9 +60,13 @@ class ClientContainer {
             username,
             token,
         });
+
+        store.commit('authenticate', true);
     }
 
-    public async ConnectFromPrevious(): Promise<boolean> {
+    public async ConnectFromPrevious(): Promise<void> {
+        store.commit('authenticate', false);
+
         const storedAuthentication = JSON.parse(
             localStorage.getItem(this.LocalStorageKey) ?? '{}',
         ) as StoredAuthentication;
@@ -105,14 +110,10 @@ class ClientContainer {
                     });
 
                     //Authenticated!
-                    return true;
-                } catch {
-                    return false; //Something went wrong during token refresh, back to login
-                }
+                    store.commit('authenticate', true);
+                } catch {}
             }
         }
-
-        return false;
     }
 
     private static CreateLink(server: string, token = ''): ApolloLink {
@@ -138,6 +139,26 @@ class ClientContainer {
         localStorage.setItem(
             this.LocalStorageKey,
             JSON.stringify(authentication),
+        );
+    }
+
+    public ClearStoredAuthentication() {
+        //Get stored
+        const storedAuthentication = JSON.parse(
+            localStorage.getItem(this.LocalStorageKey) ?? '{}',
+        ) as StoredAuthentication;
+
+        //Remove token from stored
+        storedAuthentication.token = '';
+
+        //Set previous values for login screen
+        this._previousServer = storedAuthentication.server;
+        this._previousUsername = storedAuthentication.username;
+
+        //Set to localstorage
+        localStorage.setItem(
+            this.LocalStorageKey,
+            JSON.stringify(storedAuthentication),
         );
     }
 

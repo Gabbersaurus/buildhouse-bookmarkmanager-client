@@ -7,15 +7,13 @@
             class="align-self-center"
             color="primary"
         />
-        <login
-            v-else-if="!authenticated"
-            @authenticated="authenticated = true"
-        />
+        <login v-else-if="!authenticated" />
         <bookmark-list v-else />
     </v-app>
 </template>
 
 <script lang="ts">
+import {mapState} from 'vuex';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import BookmarkList from './components/BookmarkList.vue';
@@ -24,10 +22,10 @@ import ClientContainer from './graphQL/ClientContainer';
 
 @Component({
     components: {Login, BookmarkList},
+    computed: mapState(['authenticated']),
 })
 export default class App extends Vue {
     loading = true;
-    authenticated = false;
 
     mounted() {
         void this.connectFromPrevious();
@@ -36,9 +34,7 @@ export default class App extends Vue {
     async connectFromPrevious() {
         this.loading = true;
 
-        if (await ClientContainer.ConnectFromPrevious()) {
-            this.authenticated = true;
-        }
+        await ClientContainer.ConnectFromPrevious();
 
         this.loading = false;
     }
