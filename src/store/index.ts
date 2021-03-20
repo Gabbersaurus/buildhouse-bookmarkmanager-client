@@ -28,7 +28,12 @@ export default new Vuex.Store({
 
                 context.commit(
                     'setBookmarks',
-                    result.data.bookmarks as Bookmark[],
+                    result.data.bookmarks.sort(function(
+                        a: Bookmark,
+                        b: Bookmark,
+                    ) {
+                        return a.order - b.order;
+                    }) as Bookmark[],
                 );
             }
         },

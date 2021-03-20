@@ -7,3 +7,9 @@ export const Authenticate = gql`
         }
     }
 `;
+
+export const SetBookmarks = gql`
+    mutation SetBookmarks($bookmarks: [BookmarkInput]!) {
+        setBookmarks(bookmarks: $bookmarks)
+    }
+`;

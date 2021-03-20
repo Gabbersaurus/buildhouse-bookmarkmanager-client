@@ -11,12 +11,8 @@ module.exports = {
                     type: 'image/png',
                     sizes: '192x192',
                 },
-                {
-                    src: 'img/icons/app-512x512.png',
-                    type: 'image/png',
-                    sizes: '512x512',
-                },
             ],
+            scope: '/',
         },
         themeColor: '#00796B',
         msTileColor: '#00796B',

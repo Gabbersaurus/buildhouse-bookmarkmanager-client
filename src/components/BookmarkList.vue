@@ -17,7 +17,7 @@
                         v-for="bookmark in bookmarks"
                         :key="bookmark.id"
                         cols="3"
-                        class="d-flex align-center"
+                        class="d-flex pa-1 align-center"
                     >
                         <v-btn
                             height="100%"
@@ -30,12 +30,12 @@
                             >
                                 <v-img
                                     src="https://github.githubassets.com/app-icon-192.png"
-                                    height="72px"
-                                    width="72px"
+                                    height="70px"
+                                    width="70px"
                                     :aspect="1"
                                 ></v-img>
                                 <div
-                                    style="max-width: 72px;"
+                                    style="max-width: 70px;"
                                     class="text-caption text-none  text-truncate"
                                 >
                                     {{ bookmark.name }}
