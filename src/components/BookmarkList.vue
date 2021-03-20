@@ -1,6 +1,13 @@
 <template>
     <v-main>
         <v-container>
+            <v-overlay :value="loading">
+                <v-progress-circular
+                    indeterminate
+                    color="primary"
+                ></v-progress-circular>
+            </v-overlay>
+
             <div class="d-flex pa-4 align-center">
                 <div class="text-overline">Buildhouse Bookmark Manager</div>
                 <v-spacer />
@@ -61,15 +68,18 @@ import Settings from './Settings.vue';
 })
 export default class BookmarkList extends Vue {
     settings = false;
+    loading = true;
 
     mounted() {
         void this.loadBookmarks();
     }
 
     async loadBookmarks() {
-        //Todo: loading spinner
+        this.loading = true;
 
-        this.$store.dispatch('loadBookmarks');
+        await this.$store.dispatch('loadBookmarks');
+
+        this.loading = false;
     }
 }
 </script>
