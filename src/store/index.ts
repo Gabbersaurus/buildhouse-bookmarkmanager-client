@@ -1,15 +1,21 @@
 import ClientContainer from '@/graphQL/ClientContainer';
 import {Bookmarks} from '@/graphQL/queries';
 import Bookmark from '@/types/Bookmark';
+import SearchProvider from '@/types/SearchProvider';
 import Vue from 'vue';
 import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
+const searchProviderLocalStorageKey = 'search-provider';
+
 export default new Vuex.Store({
     state: {
         authenticated: false,
         bookmarks: [] as Bookmark[],
+        searchProvider:
+            localStorage.getItem(searchProviderLocalStorageKey) ??
+            SearchProvider.DuckDuckGo.toString(),
     },
     mutations: {
         authenticate(state, value) {
@@ -17,6 +23,10 @@ export default new Vuex.Store({
         },
         setBookmarks(state, bookmarks) {
             state.bookmarks = bookmarks;
+        },
+        setSearchProvider(state, searchProvider) {
+            localStorage.setItem(searchProviderLocalStorageKey, searchProvider);
+            state.searchProvider = searchProvider;
         },
     },
     actions: {

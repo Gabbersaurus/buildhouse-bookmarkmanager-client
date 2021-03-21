@@ -19,9 +19,7 @@
             <settings v-model="settings" />
 
             <v-container>
-                <v-row>
-                    <search-bar />
-                </v-row>
+                <search-bar />
                 <v-row>
                     <v-col
                         v-for="bookmark in bookmarks"

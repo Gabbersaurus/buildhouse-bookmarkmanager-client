@@ -25,7 +25,7 @@
                     </v-btn>
                 </v-toolbar-items>
             </v-toolbar>
-            <v-list three-line subheader>
+            <v-list subheader>
                 <v-subheader>Bookmarks</v-subheader>
                 <v-list-item v-if="error">
                     <v-alert class="ma-auto" type="error">
@@ -113,6 +113,16 @@
             <v-divider></v-divider>
             <v-list>
                 <v-list-item>
+                    <v-select
+                        :items="searchProviders"
+                        v-model="searchProvider"
+                        label="Search provider"
+                    ></v-select>
+                </v-list-item>
+            </v-list>
+            <v-divider></v-divider>
+            <v-list>
+                <v-list-item>
                     <v-list-item-content>
                         <v-btn color="secondary" @click="resetFavicons">
                             Reload favicons
@@ -138,9 +148,13 @@ import {ModelSync, Watch} from 'vue-property-decorator';
 import ClientContainer from '@/graphQL/ClientContainer';
 import Bookmark from '@/types/Bookmark';
 import {ResetFavicons, SetBookmarks} from '@/graphQL/mutations';
+import {getSearchProviders} from '@/helpers/searchProviders';
 
 @Component
 export default class Settings extends Vue {
+    @ModelSync('value', 'change', {type: Boolean})
+    open!: boolean;
+
     bookmarks: Bookmark[] = [];
     bookmarkHeaders = [
         {
@@ -151,18 +165,22 @@ export default class Settings extends Vue {
         {text: 'Actions', value: 'actions'},
     ];
 
-    @ModelSync('value', 'change', {type: Boolean})
-    open!: boolean;
-
     loading = false;
     error = '';
+
+    searchProvider = '';
+    searchProviders = getSearchProviders();
+
     idCount = 0;
 
     @Watch('open')
     onOpenChanged() {
+        //get current searchprovider
+        this.searchProvider = this.$store.state.searchProvider;
+
+        //Clone bookmarks and recount order so there are no gaps in the order
         let i = 0;
 
-        //Clone bookmarks and recount order so there are no gaps
         this.bookmarks = (JSON.parse(
             JSON.stringify(this.$store.state.bookmarks),
         ) as Bookmark[]).map((bookmark) => {
@@ -213,6 +231,10 @@ export default class Settings extends Vue {
         this.error = '';
         this.loading = true;
 
+        //Save search provider preference
+        this.$store.commit('setSearchProvider', this.searchProvider);
+
+        //Save bookmarks
         try {
             await ClientContainer.client?.mutate({
                 mutation: SetBookmarks,
@@ -240,16 +262,16 @@ export default class Settings extends Vue {
         await this.$store.dispatch('loadBookmarks');
 
         //Reload list and remove loading
-        this.onOpenChanged(); //Reload list
+        this.onOpenChanged();
         this.loading = false;
     }
 
     async resetFavicons() {
         this.loading = true;
 
-        await ClientContainer.client?.mutate({
-            mutation: ResetFavicons,
-        });
+        await ClientContainer.client?.mutate({mutation: ResetFavicons});
+        await this.$store.dispatch('loadBookmarks');
+        this.onOpenChanged();
 
         this.loading = false;
     }
