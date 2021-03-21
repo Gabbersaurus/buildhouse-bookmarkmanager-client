@@ -37,4 +37,3 @@ The following search providers are currently added:
 -   Run `yarn install` to install packages.
 -   To start the dev server, run `yarn serve`.
 -   To build, run `yarn build`. The build can be hosted in any static file server.
-    -   Sadly, `@vue/cli-plugin-pwa` doesn't apply the PWA scope in the `manifest.json`. To make sure that the bookmarks are opened outside of the PWA, add `scope: '/'` to the `manifest.json` of the build.
