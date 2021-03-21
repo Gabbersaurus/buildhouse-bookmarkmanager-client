@@ -192,6 +192,14 @@ export default class Settings extends Vue {
     }
 
     addBookmark() {
+        const order = 0;
+
+        if (this.bookmarks.length > 0) {
+            this.bookmarks.reduce((accumulator, current) =>
+                accumulator.order > current.order ? accumulator : current,
+            ).order + 1;
+        }
+
         this.bookmarks = [
             ...this.bookmarks,
             {
@@ -199,12 +207,7 @@ export default class Settings extends Vue {
                 name: 'New bookmark',
                 url: 'https://bookmark',
                 favicon: '',
-                order:
-                    this.bookmarks.reduce((accumulator, current) =>
-                        accumulator.order > current.order
-                            ? accumulator
-                            : current,
-                    ).order + 1,
+                order,
             },
         ];
     }

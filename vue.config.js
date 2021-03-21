@@ -12,7 +12,6 @@ module.exports = {
                     sizes: '192x192',
                 },
             ],
-            scope: '/',
         },
         themeColor: '#00796B',
         msTileColor: '#00796B',
