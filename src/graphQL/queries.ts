@@ -14,6 +14,7 @@ export const Bookmarks = gql`
             id
             name
             url
+            favicon
             order
         }
     }

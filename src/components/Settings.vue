@@ -10,6 +10,7 @@
                 <v-progress-circular
                     indeterminate
                     color="primary"
+                    class="mb-4"
                 ></v-progress-circular>
             </v-overlay>
             <v-toolbar dark color="primary">
@@ -110,7 +111,14 @@
                 </v-list-item>
             </v-list>
             <v-divider></v-divider>
-            <v-list three-line subheader>
+            <v-list>
+                <v-list-item>
+                    <v-list-item-content>
+                        <v-btn color="secondary" @click="resetFavicons">
+                            Reload favicons
+                        </v-btn>
+                    </v-list-item-content>
+                </v-list-item>
                 <v-list-item>
                     <v-list-item-content>
                         <v-btn color="secondary" @click="logOut">
@@ -129,7 +137,7 @@ import Component from 'vue-class-component';
 import {ModelSync, Watch} from 'vue-property-decorator';
 import ClientContainer from '@/graphQL/ClientContainer';
 import Bookmark from '@/types/Bookmark';
-import {SetBookmarks} from '@/graphQL/mutations';
+import {ResetFavicons, SetBookmarks} from '@/graphQL/mutations';
 
 @Component
 export default class Settings extends Vue {
@@ -172,6 +180,7 @@ export default class Settings extends Vue {
                 id: -++this.idCount,
                 name: 'New bookmark',
                 url: 'https://bookmark',
+                favicon: '',
                 order:
                     this.bookmarks.reduce((accumulator, current) =>
                         accumulator.order > current.order
@@ -227,8 +236,21 @@ export default class Settings extends Vue {
             return;
         }
 
+        //Reload bookmarks from API
         await this.$store.dispatch('loadBookmarks');
+
+        //Reload list and remove loading
         this.onOpenChanged(); //Reload list
+        this.loading = false;
+    }
+
+    async resetFavicons() {
+        this.loading = true;
+
+        await ClientContainer.client?.mutate({
+            mutation: ResetFavicons,
+        });
+
         this.loading = false;
     }
 

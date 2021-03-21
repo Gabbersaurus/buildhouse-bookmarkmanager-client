@@ -2092,6 +2092,11 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
+beautiful-dom@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/beautiful-dom/-/beautiful-dom-1.0.9.tgz#100905860adf03ee0261e258fb887d4f4ee373b8"
+  integrity sha512-DCtfle8jxvIjUgyrcokWcxVxDxS9bsWBC5lntKasOczGwkGM7Q/M22aD5OVEpIsF3blcm7S64Ub3nWHb0MUYxQ==
+
 bfj@^6.1.1:
   version "6.1.2"
   resolved "https://registry.yarnpkg.com/bfj/-/bfj-6.1.2.tgz#325c861a822bcb358a41c78a33b8e6e2086dde7f"

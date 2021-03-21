@@ -20,6 +20,9 @@
 
             <v-container>
                 <v-row>
+                    <search-bar />
+                </v-row>
+                <v-row>
                     <v-col
                         v-for="bookmark in bookmarks"
                         :key="bookmark.id"
@@ -36,13 +39,13 @@
                                 class="d-flex flex-column align-center justify-space-between"
                             >
                                 <v-img
-                                    src="https://github.githubassets.com/app-icon-192.png"
-                                    height="70px"
-                                    width="70px"
+                                    :src="bookmark.favicon"
+                                    height="72px"
+                                    width="72px"
                                     :aspect="1"
                                 ></v-img>
                                 <div
-                                    style="max-width: 70px;"
+                                    style="max-width: 72px;"
                                     class="text-caption text-none  text-truncate"
                                 >
                                     {{ bookmark.name }}
@@ -61,9 +64,10 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import {mapState} from 'vuex';
 import Settings from './Settings.vue';
+import SearchBar from './SearchBar.vue';
 
 @Component({
-    components: {Settings},
+    components: {Settings, SearchBar},
     computed: mapState(['bookmarks']),
 })
 export default class BookmarkList extends Vue {
@@ -78,6 +82,8 @@ export default class BookmarkList extends Vue {
         this.loading = true;
 
         await this.$store.dispatch('loadBookmarks');
+
+        //Clean old favicons
 
         this.loading = false;
     }

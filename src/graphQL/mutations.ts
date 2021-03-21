@@ -13,3 +13,9 @@ export const SetBookmarks = gql`
         setBookmarks(bookmarks: $bookmarks)
     }
 `;
+
+export const ResetFavicons = gql`
+    mutation ResetFavicons {
+        resetFavicons
+    }
+`;
